@@ -268,6 +268,7 @@ def test_wrapper_to_tensor(wrapper_cls, weight_config, device):
     [
         (FakeQuantizedWeightWrapperBaseTensor, Float8FakeQuantizeConfig()),
         (Float8FakeQuantizedWeightWrapperTensor, Float8FakeQuantizeConfig()),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig()),
     ],
 )
 def test_wrapper_repr(wrapper_cls, weight_config, device):
