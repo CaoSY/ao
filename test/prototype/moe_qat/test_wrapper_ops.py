@@ -324,6 +324,8 @@ def test_wrapper_dispatch_non_preserved_op(wrapper_cls, weight_config, func, dev
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig())
     ],
 )
 def test_wrapper_dispatch_detach(wrapper_cls, weight_config, act_config, device):
