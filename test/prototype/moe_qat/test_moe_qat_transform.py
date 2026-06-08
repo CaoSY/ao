@@ -278,12 +278,10 @@ def test_is_expert_filter():
 
 
 @pytest.mark.parametrize("device", target_devices)
-@pytest.mark.parametrize(
-    "weight_config, wrapper_cls",
-    [
-        (Float8FakeQuantizeConfig(), Float8FakeQuantizedWeightWrapperTensor),
-    ],
-)
+@pytest.mark.parametrize("weight_config, wrapper_cls", [
+    (Float8FakeQuantizeConfig(), Float8FakeQuantizedWeightWrapperTensor),
+    (MXFakeQuantizeConfig(), MXFakeQuantizedWeightWrapperTensor),
+])
 def test_is_expert_integration(device, weight_config, wrapper_cls):
     """_is_expert as filter_fn: only expert submodules are transformed, router skipped."""
 
