@@ -257,6 +257,12 @@ def test_wrapper_dispatch_weight_config_mismatch(
                 dtype=torch.float8_e5m2, granularity=PerRow(dim=-1)
             ),
         ),
+        (
+            MXFakeQuantizedWeightWrapperTensor,
+            MXFakeQuantizeConfig(dtype=torch.float8_e4m3fn),
+            MXFakeQuantizeConfig(dtype=torch.float8_e4m3fn),
+            MXFakeQuantizeConfig(dtype=torch.float8_e5m2),
+        ),
     ],
 )
 def test_wrapper_dispatch_activation_config_mismatch(
