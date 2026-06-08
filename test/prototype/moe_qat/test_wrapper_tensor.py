@@ -95,6 +95,11 @@ def test_wrapper_init_stores_attrs(wrapper_cls, weight_config, act_config, devic
             ),
             r"^Only the row-wise granularity is supported\.$",
         ),
+        (
+            MXFakeQuantizedWeightWrapperTensor,
+            None,
+            r"^Only `MXFakeQuantizeConfig` is supported for `weight_config` in MXFakeQuantizedWeightWrapperTensor\.$"
+        ),
     ],
 )
 def test_wrapper_init_rejects_invalid_weight_config(
