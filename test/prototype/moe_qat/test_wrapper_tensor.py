@@ -389,6 +389,8 @@ def test_meta_weights(wrapper_cls, weight_config):
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 @pytest.mark.parametrize(
@@ -440,6 +442,8 @@ def test_fsdp_pre_all_gather(
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 def test_fsdp_post_all_gather_first_step(
@@ -478,6 +482,8 @@ def test_fsdp_post_all_gather_first_step(
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 @pytest.mark.parametrize("dtype", [torch.float32, torch.bfloat16])
@@ -518,6 +524,8 @@ def test_fsdp_post_all_gather_existing_out_same_dtype(
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 def test_fsdp_post_all_gather_existing_out_same_dtype_dtensor(
@@ -571,6 +579,8 @@ def test_fsdp_post_all_gather_existing_out_same_dtype_dtensor(
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 def test_fsdp_post_all_gather_existing_out_cross_dtype(
@@ -625,6 +635,8 @@ def test_fsdp_post_all_gather_existing_out_cross_dtype(
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 def test_fsdp_post_all_gather_existing_out_cross_dtype_dtensor(
@@ -685,6 +697,8 @@ def test_fsdp_post_all_gather_existing_out_cross_dtype_dtensor(
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 def test_fsdp_post_all_gather_existing_out_wrong_type(
