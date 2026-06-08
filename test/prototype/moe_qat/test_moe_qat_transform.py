@@ -157,12 +157,10 @@ def test_prepare_wraps_expert_weights(device, weight_config, wrapper_cls):
 
 
 @pytest.mark.parametrize("device", target_devices)
-@pytest.mark.parametrize(
-    "weight_config, wrapper_cls",
-    [
-        (Float8FakeQuantizeConfig(), Float8FakeQuantizedWeightWrapperTensor),
-    ],
-)
+@pytest.mark.parametrize("weight_config, wrapper_cls", [
+    (Float8FakeQuantizeConfig(), Float8FakeQuantizedWeightWrapperTensor),
+    (MXFakeQuantizeConfig(), MXFakeQuantizedWeightWrapperTensor),
+])
 def test_prepare_skips_non_expert_params(device, weight_config, wrapper_cls):
     """params_filter_fn excluding 2D params skips router.gate.weight."""
     # use_grouped_mm only affects the forward computation path — no forward run here.
