@@ -4,6 +4,20 @@ import pytest
 import torch
 
 from torchao.prototype.moe_qat import MoEQATConfig
+from torchao.prototype.moe_qat.tensor import (
+    FakeQuantizedWeightWrapperBaseTensor,
+    Float8FakeQuantizedWeightWrapperTensor,
+    MXFakeQuantizedWeightWrapperTensor,
+)
+from torchao.prototype.qat.mx import MXFakeQuantizeConfig
+from torchao.quantization.qat.fake_quantize_config import Float8FakeQuantizeConfig
+from torchao.quantization.qat import QATStep
+from torchao.quantization.granularity import PerRow, PerTensor
+from torchao.quantization.quant_api import Float8DynamicActivationFloat8WeightConfig, quantize_
+
+from .reference_moe import MoE
+from .testing_utils import _moe_input, _expert_weight_filter, create_moe_model, target_devices
+
 from torchao.prototype.moe_qat.config import _is_expert
 from torchao.prototype.moe_qat.transform import (
     _is_parameter,
@@ -110,6 +124,7 @@ def test_replace_params_recursive():
     "weight_config, wrapper_cls",
     [
         (Float8FakeQuantizeConfig(), Float8FakeQuantizedWeightWrapperTensor),
+        (MXFakeQuantizeConfig(), MXFakeQuantizedWeightWrapperTensor),
     ],
 )
 def test_prepare_wraps_expert_weights(device, weight_config, wrapper_cls):
