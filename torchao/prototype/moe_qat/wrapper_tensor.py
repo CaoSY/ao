@@ -14,6 +14,7 @@ from torchao.prototype.moe_training.utils import (
     unwrap_weight,
 )
 from torchao.quantization.granularity import Granularity, PerRow
+from torchao.prototype.qat.mx import MXFakeQuantizeConfig
 from torchao.quantization.qat.fake_quantize_config import (
     FakeQuantizeConfigBase,
     Float8FakeQuantizeConfig,
@@ -602,3 +603,43 @@ def _(
         ),
         requires_grad=param.requires_grad,
     )
+
+
+class MXFakeQuantizedWeightWrapperTensor(FakeQuantizedWeightWrapperBaseTensor):
+    """
+    Applies MX block-wise fake-quantization during MoE QAT.
+
+    Intercepts computation ops via :meth:`__torch_function__`, applies MX
+    fake-quantization (real MX matmul in forward, dequantized HP matmul in
+    backward) to the weights and optionally the activations.
+
+    Both ``weight_config`` and ``activation_config`` (if set) must be
+    :class:`~torchao.prototype.qat.mx.MXFakeQuantizeConfig`.
+    """
+
+    def __init__(
+        self,
+        tensor: torch.Tensor,
+        activation_config: Optional[FakeQuantizeConfigBase] = None,
+        weight_config: Optional[FakeQuantizeConfigBase] = None,
+    ):
+        if activation_config is not None and not isinstance(
+            activation_config, MXFakeQuantizeConfig
+        ):
+            raise ValueError(
+                f"Only `MXFakeQuantizeConfig` is supported for `activation_config` "
+                f"in {type(self).__name__}."
+            )
+        
+        if weight_config is not None and not isinstance(
+            weight_config, MXFakeQuantizeConfig
+        ):
+            raise ValueError(
+                f"Only `MXFakeQuantizeConfig` is supported for `weight_config` "
+                f"in {type(self).__name__}."
+            )
+        super().__init__(
+            tensor,
+            activation_config=activation_config,
+            weight_config=weight_config,
+        )
