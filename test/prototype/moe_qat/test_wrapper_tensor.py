@@ -245,6 +245,7 @@ def test_wrapper_deepcopy(wrapper_cls, weight_config, act_config, device):
     [
         (FakeQuantizedWeightWrapperBaseTensor, Float8FakeQuantizeConfig()),
         (Float8FakeQuantizedWeightWrapperTensor, Float8FakeQuantizeConfig()),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig()),
     ],
 )
 def test_wrapper_to_tensor(wrapper_cls, weight_config, device):
