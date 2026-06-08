@@ -353,12 +353,10 @@ def test_is_parameter_with_wrapped_data_filter(device, weight_config, wrapper_cl
     assert _is_parameter_with_wrapped_data(None, "any.fqn") is False
 
 
-@pytest.mark.parametrize(
-    "weight_config, wrapper_cls",
-    [
-        (Float8FakeQuantizeConfig(), Float8FakeQuantizedWeightWrapperTensor),
-    ],
-)
+@pytest.mark.parametrize("weight_config, wrapper_cls", [
+    (Float8FakeQuantizeConfig(), Float8FakeQuantizedWeightWrapperTensor),
+    (MXFakeQuantizeConfig(), MXFakeQuantizedWeightWrapperTensor),
+])
 @pytest.mark.parametrize("device", target_devices)
 def test_is_parameter_with_wrapped_data_integration(device, weight_config, wrapper_cls):
     """_is_parameter_with_wrapped_data as params_filter_fn: prepare then convert unwraps all."""
