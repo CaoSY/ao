@@ -177,6 +177,8 @@ def test_pin_memory_preserves_subclass(wrapper_cls, weight_config, act_config):
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 def test_wrapper_dispatch_copy_(wrapper_cls, weight_config, act_config, device):
