@@ -135,6 +135,8 @@ def test_wrapper_preserves_subclass(
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 def test_pin_memory_preserves_subclass(wrapper_cls, weight_config, act_config):
