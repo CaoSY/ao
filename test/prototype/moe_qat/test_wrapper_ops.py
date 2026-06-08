@@ -287,6 +287,7 @@ def test_wrapper_dispatch_activation_config_mismatch(
     [
         (FakeQuantizedWeightWrapperBaseTensor, Float8FakeQuantizeConfig()),
         (Float8FakeQuantizedWeightWrapperTensor, Float8FakeQuantizeConfig()),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig()),
     ],
 )
 @pytest.mark.parametrize(
