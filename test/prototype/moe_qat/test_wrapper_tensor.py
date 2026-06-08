@@ -59,6 +59,8 @@ def test_wrapper_init_accepts_none_weight_config(wrapper_cls, device):
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 def test_wrapper_init_stores_attrs(wrapper_cls, weight_config, act_config, device):
