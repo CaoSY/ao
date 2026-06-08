@@ -620,9 +620,17 @@ class MXFakeQuantizedWeightWrapperTensor(FakeQuantizedWeightWrapperBaseTensor):
     def __init__(
         self,
         tensor: torch.Tensor,
-        activation_config: Optional[FakeQuantizeConfigBase] = None,
         weight_config: Optional[FakeQuantizeConfigBase] = None,
+        activation_config: Optional[FakeQuantizeConfigBase] = None,
     ):
+        if weight_config is not None and not isinstance(
+            weight_config, MXFakeQuantizeConfig
+        ):
+            raise ValueError(
+                f"Only `MXFakeQuantizeConfig` is supported for `weight_config` "
+                f"in {type(self).__name__}."
+            )
+        
         if activation_config is not None and not isinstance(
             activation_config, MXFakeQuantizeConfig
         ):
@@ -631,13 +639,6 @@ class MXFakeQuantizedWeightWrapperTensor(FakeQuantizedWeightWrapperBaseTensor):
                 f"in {type(self).__name__}."
             )
         
-        if weight_config is not None and not isinstance(
-            weight_config, MXFakeQuantizeConfig
-        ):
-            raise ValueError(
-                f"Only `MXFakeQuantizeConfig` is supported for `weight_config` "
-                f"in {type(self).__name__}."
-            )
         super().__init__(
             tensor,
             activation_config=activation_config,
