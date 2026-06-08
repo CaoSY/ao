@@ -78,28 +78,18 @@ def test_config_infer_from_base_config(
 def test_config_rejects_invalid_weight_config():
     """For now only Float8FakeQuantizeConfig is supported for weight config."""
     intx_config = IntxFakeQuantizeConfig(torch.int8, "per_channel")
-    with pytest.raises(
-        ValueError,
-        match=r"^Only `Float8FakeQuantizeConfig` is supported for `weight_config` in MoEQATConfig yet\.$",
-    ):
+    expected_msg = r"^Only `Float8FakeQuantizeConfig` and `MXFakeQuantizeConfig` are supported for `weight_config` in MoEQATConfig yet\.$"
+    with pytest.raises(ValueError, match=expected_msg):
         MoEQATConfig(weight_config=intx_config, step="prepare")
 
 
 def test_config_rejects_invalid_activation_config():
-    """For now only Float8FakeQuantizeConfig is supported for activation config."""
-    weight_config = Float8FakeQuantizeConfig(
-        dtype=torch.float8_e4m3fn, granularity=PerRow()
-    )
+    """For now only Float8FakeQuantizeConfig and MXFakeQuantizeConfig are supported for activation config."""
+    weight_config = Float8FakeQuantizeConfig(dtype=torch.float8_e4m3fn, granularity=PerRow())
     activation_config = IntxFakeQuantizeConfig(torch.int8, "per_channel")
-    with pytest.raises(
-        ValueError,
-        match=r"^Only `Float8FakeQuantizeConfig` is supported for `activation_config` in MoEQATConfig yet\.$",
-    ):
-        MoEQATConfig(
-            weight_config=weight_config,
-            activation_config=activation_config,
-            step="prepare",
-        )
+    expected_msg = r"^Only `Float8FakeQuantizeConfig` and `MXFakeQuantizeConfig` are supported for `activation_config` in MoEQATConfig yet\.$"
+    with pytest.raises(ValueError, match=expected_msg):
+        MoEQATConfig(weight_config=weight_config, activation_config=activation_config, step="prepare")
 
 
 def test_config_rejects_invalid_base_config_in_prepare_step():
@@ -107,10 +97,8 @@ def test_config_rejects_invalid_base_config_in_prepare_step():
     from torchao.quantization import Int4WeightOnlyConfig
 
     base_config = Int4WeightOnlyConfig(group_size=32)
-    with pytest.raises(
-        ValueError,
-        match=r"^Only `Float8DynamicActivationFloat8WeightConfig` is supported for `base_config` in MoEQATConfig yet\.$",
-    ):
+    expected_msg = r"^Only `Float8DynamicActivationFloat8WeightConfig` and `MXDynamicActivationMXWeightConfig` are supported for `base_config` in MoEQATConfig yet\.$"
+    with pytest.raises(ValueError, match=expected_msg):
         MoEQATConfig(base_config=base_config, step="prepare")
 
 
