@@ -644,3 +644,26 @@ class MXFakeQuantizedWeightWrapperTensor(FakeQuantizedWeightWrapperBaseTensor):
             activation_config=activation_config,
             weight_config=weight_config,
         )
+
+
+@register_MoE_QAT_quantize_parameter_handler(MXFakeQuantizeConfig)
+def _(
+    module: nn.Module,
+    param_fqn: str,
+    param: nn.Parameter,
+    extra_args: Tuple[Any, ...] = (),
+):
+    from torchao.prototype.moe_qat.config import MoEQATConfig
+
+    config: MoEQATConfig = extra_args[0]
+
+    assert isinstance(config, MoEQATConfig), "extra_args[0] must be a MoEQATConfig"
+
+    return nn.Parameter(
+        data=MXFakeQuantizedWeightWrapperTensor(
+            param.data,
+            activation_config=config.activation_config,
+            weight_config=config.weight_config,
+        ),
+        requires_grad=param.requires_grad,
+    )
