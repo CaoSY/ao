@@ -359,6 +359,7 @@ def test_wrapper_tensor_unflatten(wrapper_cls, weight_config, act_config, device
     [
         (FakeQuantizedWeightWrapperBaseTensor, Float8FakeQuantizeConfig()),
         (Float8FakeQuantizedWeightWrapperTensor, Float8FakeQuantizeConfig()),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig()),
     ],
 )
 def test_meta_weights(wrapper_cls, weight_config):
