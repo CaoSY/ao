@@ -13,6 +13,7 @@ from torchao.prototype.qat.mx import MXFakeQuantizeConfig
 from torchao.quantization.qat.fake_quantize_config import Float8FakeQuantizeConfig
 from torchao.quantization.qat import QATStep
 from torchao.quantization.granularity import PerRow, PerTensor
+from torchao.prototype.mx_formats import MXDynamicActivationMXWeightConfig
 from torchao.quantization.quant_api import Float8DynamicActivationFloat8WeightConfig, quantize_
 
 from .reference_moe import MoE
@@ -238,15 +239,10 @@ def test_convert_unwraps(device, weight_config, wrapper_cls):
 
 
 @pytest.mark.parametrize("device", target_devices)
-@pytest.mark.parametrize(
-    "base_config, wrapper_cls",
-    [
-        (
-            Float8DynamicActivationFloat8WeightConfig(granularity=PerRow()),
-            Float8FakeQuantizedWeightWrapperTensor,
-        ),
-    ],
-)
+@pytest.mark.parametrize("base_config, wrapper_cls", [
+    (Float8DynamicActivationFloat8WeightConfig(granularity=PerRow()), Float8FakeQuantizedWeightWrapperTensor),
+    (MXDynamicActivationMXWeightConfig(), MXFakeQuantizedWeightWrapperTensor),
+])
 def test_config_prepare_with_base_config(device, base_config, wrapper_cls):
     """Model can be prepared using base_config instead of explicit weight_config."""
 
