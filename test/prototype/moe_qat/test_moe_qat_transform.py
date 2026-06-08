@@ -187,12 +187,10 @@ def test_prepare_skips_non_expert_params(device, weight_config, wrapper_cls):
 
 
 @pytest.mark.parametrize("device", target_devices)
-@pytest.mark.parametrize(
-    "weight_config, wrapper_cls",
-    [
-        (Float8FakeQuantizeConfig(), Float8FakeQuantizedWeightWrapperTensor),
-    ],
-)
+@pytest.mark.parametrize("weight_config, wrapper_cls", [
+    (Float8FakeQuantizeConfig(), Float8FakeQuantizedWeightWrapperTensor),
+    (MXFakeQuantizeConfig(), MXFakeQuantizedWeightWrapperTensor),
+])
 def test_convert_unwraps(device, weight_config, wrapper_cls):
     """Convert unwraps all parameters and restores original weight values."""
 
