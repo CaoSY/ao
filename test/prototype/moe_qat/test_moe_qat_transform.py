@@ -315,12 +315,10 @@ def test_is_parameter_filter():
 
 
 @pytest.mark.parametrize("device", target_devices)
-@pytest.mark.parametrize(
-    "weight_config, wrapper_cls",
-    [
-        (Float8FakeQuantizeConfig(), Float8FakeQuantizedWeightWrapperTensor),
-    ],
-)
+@pytest.mark.parametrize("weight_config, wrapper_cls", [
+    (Float8FakeQuantizeConfig(), Float8FakeQuantizedWeightWrapperTensor),
+    (MXFakeQuantizeConfig(), MXFakeQuantizedWeightWrapperTensor),
+])
 def test_is_parameter_integration(device, weight_config, wrapper_cls):
     """Default filter (_is_parameter) wraps all parameters including 2D gate."""
 
