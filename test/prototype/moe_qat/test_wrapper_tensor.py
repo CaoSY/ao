@@ -300,6 +300,8 @@ def test_wrapper_repr(wrapper_cls, weight_config, device):
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 def test_wrapper_tensor_flatten(wrapper_cls, weight_config, act_config, device):
@@ -328,6 +330,8 @@ def test_wrapper_tensor_flatten(wrapper_cls, weight_config, act_config, device):
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 def test_wrapper_tensor_unflatten(wrapper_cls, weight_config, act_config, device):
