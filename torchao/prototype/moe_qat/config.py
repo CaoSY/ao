@@ -13,6 +13,8 @@ from torchao.prototype.moe_qat.transform import (
 from torchao.prototype.moe_qat.wrapper_tensor import (
     _MoE_QAT_PARAMETER_QUANTIZE_CONFIG_HANDLER,
 )
+from torchao.prototype.mx_formats import MXDynamicActivationMXWeightConfig
+from torchao.prototype.qat.mx import MXFakeQuantizeConfig
 from torchao.quantization.qat import QATConfig, QATStep
 from torchao.quantization.qat.fake_quantize_config import (
     FakeQuantizeConfigBase,
@@ -91,16 +93,18 @@ class MoEQATConfig(QATConfig):
     def __post_init__(self):
         torch._C._log_api_usage_once("torchao.prototype.moe_qat.MoEQATConfig")
         if self.activation_config is not None and not isinstance(
-            self.activation_config, Float8FakeQuantizeConfig
+            self.activation_config, (Float8FakeQuantizeConfig, MXFakeQuantizeConfig)
         ):
             raise ValueError(
-                "Only `Float8FakeQuantizeConfig` is supported for `activation_config` in MoEQATConfig yet."
+                "Only `Float8FakeQuantizeConfig` and `MXFakeQuantizeConfig` are supported "
+                "for `activation_config` in MoEQATConfig yet."
             )
         if self.weight_config is not None and not isinstance(
-            self.weight_config, Float8FakeQuantizeConfig
+            self.weight_config, (Float8FakeQuantizeConfig, MXFakeQuantizeConfig)
         ):
             raise ValueError(
-                "Only `Float8FakeQuantizeConfig` is supported for `weight_config` in MoEQATConfig yet."
+                "Only `Float8FakeQuantizeConfig` and `MXFakeQuantizeConfig` are supported "
+                "for `weight_config` in MoEQATConfig yet."
             )
 
         super().__post_init__()
@@ -108,14 +112,13 @@ class MoEQATConfig(QATConfig):
         if self.step == QATStep.PREPARE:
             if self.base_config is not None:
                 if not isinstance(
-                    self.base_config, Float8DynamicActivationFloat8WeightConfig
+                    self.base_config, (Float8DynamicActivationFloat8WeightConfig, MXDynamicActivationMXWeightConfig)
                 ):
                     raise ValueError(
-                        "Only `Float8DynamicActivationFloat8WeightConfig` is supported for `base_config` in MoEQATConfig yet."
+                        "Only `Float8DynamicActivationFloat8WeightConfig` and "
+                        "`MXDynamicActivationMXWeightConfig` are supported for `base_config` in MoEQATConfig yet."
                     )
-                self.activation_config, self.weight_config = (
-                    _infer_fake_quantize_configs(self.base_config)
-                )
+                self.activation_config, self.weight_config = _infer_fake_quantize_configs(self.base_config)
                 self.base_config = None
 
             if self.weight_config is None:
