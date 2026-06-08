@@ -2,6 +2,10 @@ import pytest
 import torch
 
 from torchao.prototype.moe_qat import MoEQATConfig
+from torchao.prototype.qat.mx import MXFakeQuantizeConfig
+from torchao.quantization.qat.fake_quantize_config import Float8FakeQuantizeConfig
+from torchao.quantization.qat import QATStep
+from torchao.quantization.granularity import PerRow, PerTensor
 from torchao.quantization import Float8DynamicActivationFloat8WeightConfig
 from torchao.quantization.granularity import PerRow
 from torchao.quantization.qat import IntxFakeQuantizeConfig, QATStep
@@ -55,19 +59,22 @@ def test_float8_weight_config_variants(granularity, dtype):
     assert qat_config.step == QATStep.PREPARE
 
 
-@pytest.mark.parametrize(
-    "base_config, expected_weight_config, expected_activation_config",
-    [
-        (
-            Float8DynamicActivationFloat8WeightConfig(granularity=PerRow()),
-            Float8FakeQuantizeConfig,
-            Float8FakeQuantizeConfig,
-        ),
-    ],
-)
-def test_config_infer_from_base_config(
-    base_config, expected_weight_config, expected_activation_config
-):
+@pytest.mark.parametrize("dtype", [torch.float8_e4m3fn, torch.float8_e5m2])
+def test_mx_weight_config_variants(dtype):
+    """MXFakeQuantizeConfig variants should be accepted."""
+    config = MXFakeQuantizeConfig(dtype=dtype)
+    qat_config = MoEQATConfig(weight_config=config, step="prepare")
+    assert qat_config.step == QATStep.PREPARE
+
+
+@pytest.mark.parametrize("base_config, expected_weight_config, expected_activation_config", [
+    (
+        Float8DynamicActivationFloat8WeightConfig(granularity=PerRow()),
+        Float8FakeQuantizeConfig,
+        Float8FakeQuantizeConfig
+    ),
+])
+def test_config_infer_from_base_config(base_config, expected_weight_config, expected_activation_config):
     """MoEQATConfig can infer fake quantize configs from a PTQ base_config."""
     qat_config = MoEQATConfig(base_config=base_config, step="prepare")
     assert isinstance(qat_config.weight_config, expected_weight_config)
