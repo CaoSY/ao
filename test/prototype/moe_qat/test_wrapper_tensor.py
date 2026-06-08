@@ -150,6 +150,12 @@ def test_wrapper_init_rejects_invalid_weight_config(
             ),
             r"^Only the row-wise granularity is supported for `activation_config`\.$",
         ),
+        (
+            MXFakeQuantizedWeightWrapperTensor,
+            MXFakeQuantizeConfig(),
+            None,
+            r"^Only `MXFakeQuantizeConfig` is supported for `activation_config` in MXFakeQuantizedWeightWrapperTensor\.$",
+        ),
     ],
 )
 def test_wrapper_init_rejects_invalid_activation_config(
