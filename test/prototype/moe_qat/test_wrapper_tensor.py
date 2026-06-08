@@ -10,7 +10,9 @@ from torch.distributed.fsdp import MixedPrecisionPolicy
 from torchao.prototype.moe_qat.wrapper_tensor import (
     FakeQuantizedWeightWrapperBaseTensor,
     Float8FakeQuantizedWeightWrapperTensor,
+    MXFakeQuantizedWeightWrapperTensor,
 )
+from torchao.prototype.qat.mx import MXFakeQuantizeConfig
 from torchao.quantization.granularity import PerRow, PerTensor
 from torchao.quantization.qat.fake_quantize_config import (
     FakeQuantizeConfigBase,
@@ -30,6 +32,7 @@ from .testing_utils import target_devices
     [
         FakeQuantizedWeightWrapperBaseTensor,
         Float8FakeQuantizedWeightWrapperTensor,
+        MXFakeQuantizedWeightWrapperTensor,
     ],
 )
 def test_wrapper_init_accepts_none_weight_config(wrapper_cls, device):
