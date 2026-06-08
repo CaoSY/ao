@@ -8,7 +8,9 @@ from torchao.float8.float8_utils import compute_error
 from torchao.prototype.moe_qat.wrapper_tensor import (
     FakeQuantizedWeightWrapperBaseTensor,
     Float8FakeQuantizedWeightWrapperTensor,
+    MXFakeQuantizedWeightWrapperTensor,
 )
+from torchao.prototype.qat.mx import MXFakeQuantizeConfig
 from torchao.quantization.granularity import PerRow, PerTensor
 from torchao.quantization.qat.fake_quantize_config import Float8FakeQuantizeConfig
 from torchao.utils import TorchAOBaseTensor
@@ -34,6 +36,8 @@ from .testing_utils import target_devices
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 @pytest.mark.parametrize(
