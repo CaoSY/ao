@@ -195,6 +195,8 @@ def test_wrapper_init_rejects_invalid_activation_config(
             Float8FakeQuantizeConfig(),
             Float8FakeQuantizeConfig(),
         ),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), None),
+        (MXFakeQuantizedWeightWrapperTensor, MXFakeQuantizeConfig(), MXFakeQuantizeConfig()),
     ],
 )
 def test_wrapper_deepcopy(wrapper_cls, weight_config, act_config, device):
